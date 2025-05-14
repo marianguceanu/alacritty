@@ -1,37 +1,60 @@
+-- Necessary imports for configuration
 local wezterm = require 'wezterm'
-
 local config = wezterm.config_builder()
 
+-- Setting the default program to launch if on windows
+if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
+	config.default_prog = { "pwsh.exe", "-NoLogo" }
+end
 
-config.color_scheme = 'NvimDark'
+-- Background and tab bar modifications so that they stay one color
 config.colors = {
-	background = "#14161b"
+	background = 'black',
+	tab_bar = {
+		background = "#111111",
+		active_tab = {
+			bg_color = "#111111",
+			fg_color = "white",
+			italic = true,
+		},
+		inactive_tab = {
+			bg_color = "#111111",
+			fg_color = "grey",
+		},
+		new_tab = {
+			bg_color = "#111111",
+			fg_color = "white",
+		},
+	},
 }
 
+-- Font and enabling the ligatures
 config.font =
-    wezterm.font('IosevkaTerm NF', { weight = 'Regular' })
-config.font_size = 16.5
+    wezterm.font('JetBrainsMono NF', { weight = 'Regular' })
+config.font_size = 13
 config.harfbuzz_features = { 'calt=1', 'clig=1', 'liga=1' }
 
+--
 config.inactive_pane_hsb = {
 	saturation = 0.9,
 	brightness = 0.8,
 }
 
 config.window_padding = {
-	left = 10,
-	right = 10,
+	left = 5,
+	right = 5,
 	top = 10,
 	bottom = 0,
 }
 config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
 config.enable_scroll_bar = false
 config.use_fancy_tab_bar = false
+config.tab_bar_at_bottom = true
 
-config.default_prog = { "C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.5.0.0_x64__8wekyb3d8bbwe\\pwsh.exe" }
-
+-- Simple keys for switching between panes
 config.keys = {
 
+	-- Alternate way to kill tabs if you don't like CTRL-w
 	{
 		key = "x",
 		mods = "CTRL|SHIFT",
